@@ -1,8 +1,6 @@
 package com.example.ngumeniuk.mobillmill
 
 import android.app.Application
-import com.example.ngumeniuk.mobillmill.location.LocationModule
-import com.example.ngumeniuk.mobillmill.weatherFragment.di.DaggerWeatherComponent
 import com.example.ngumeniuk.mobillmill.weatherFragment.di.WeatherComponent
 
 class App : Application(){
@@ -12,11 +10,11 @@ class App : Application(){
 
     override fun onCreate() {
         super.onCreate()
-        weatherComponent = buildWeatherComponent()
+//        weatherComponent = buildWeatherComponent()
     }
 
-    private fun buildWeatherComponent() = DaggerWeatherComponent
-            .builder()
-            .locationModule(LocationModule(applicationContext))
-            .build()
+//    private fun buildWeatherComponent() = DaggerWeatherComponent
+//            .builder()
+//            .locationModule(LocationModule(applicationContext))
+//            .build()
 }

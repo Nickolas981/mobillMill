@@ -27,9 +27,9 @@ class WeatherListAdapter : ListAdapter<WeatherModel, WeatherListAdapter.ViewHold
         fun bind(model: WeatherModel) {
             with(itemView) {
                 with(model) {
-                    dateTV.text = dt
-                    tempTV.text = temp.toString() + "°"
-                    min_and_maxTV.text = "$tempMin° - $tempMax°"
+//                    dateTV.text = dt
+//                    tempTV.text = temp.toString() + "°"
+//                    min_and_maxTV.text = "$tempMin° - $tempMax°"
                 }
             }
         }

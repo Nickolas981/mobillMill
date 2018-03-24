@@ -5,7 +5,7 @@ import android.arch.persistence.room.RoomDatabase
 import com.example.ngumeniuk.mobillmill.weatherFragment.data.dao.WeatherDao
 import com.example.ngumeniuk.mobillmill.weatherFragment.data.models.databaseEnteties.WeatherModel
 
-@Database(entities = arrayOf(WeatherModel::class), version = 1)
+@Database(entities = arrayOf(WeatherModel::class), version = 1, exportSchema = false)
 abstract class WeatherDatabase : RoomDatabase() {
     abstract fun weatherDao(): WeatherDao
 }
