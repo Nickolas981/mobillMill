@@ -8,7 +8,7 @@ import io.reactivex.Single
 interface DatabaseWeatherDataSource {
     fun getAll(): Flowable<List<WeatherModel>>
 
-    fun putNote(note: WeatherModel)
+    fun putWeatherModel(weatherModel: WeatherModel)
 
     fun dropTable()
 }

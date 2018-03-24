@@ -4,7 +4,7 @@ import com.example.ngumeniuk.mobillmill.weatherFragment.data.dataSource.NetworkW
 import com.example.ngumeniuk.mobilmill.web.WeatherAPI
 
 
-class RetrofitWeatherDataSource(private val api: WeatherAPI) : NetworkWeatherDataSource {
+class RetrofitWeatherRepository(private val api: WeatherAPI) : NetworkWeatherDataSource {
     override fun getWeather(lon: Double, lat: Double) =
             api.getForecastByGeo(lon, lat)
 }

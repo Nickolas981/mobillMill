@@ -20,6 +20,6 @@ class RetrofitModule {
 /*
     @Singleton
     @Provides
-    fun provideRetrofitWeatherDataSource(retrofit: Retrofit): WeatherDataSource =
-            RetrofitWeatherDataSource(retrofit.create(WeatherAPI::class.java))*/
+    fun provideRetrofitWeatherDataSource(retrofit: Retrofit): NetworkWeatherDataSource =
+            RetrofitWeatherRepository(retrofit.create(WeatherAPI::class.java))*/
 }

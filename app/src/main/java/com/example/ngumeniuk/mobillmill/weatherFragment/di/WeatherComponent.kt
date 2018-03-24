@@ -6,7 +6,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = arrayOf(RetrofitModule::class, LocationModule::class))
+@Component(modules = arrayOf(RetrofitModule::class, LocationModule::class, RoomModule::class))
 interface WeatherComponent {
-//    fun inject(presenter: WeatherPresenter)
+//    fun inject(viewModel: WeatherPresenter)
 }
