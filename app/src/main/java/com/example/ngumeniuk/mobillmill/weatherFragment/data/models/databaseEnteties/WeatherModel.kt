@@ -4,7 +4,7 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import com.example.ngumeniuk.curogram.utils.Differeble
 
-@Entity
+@Entity(tableName = "weather")
 data class WeatherModel(
         val temp: Double,
         val tempMin: Double,
