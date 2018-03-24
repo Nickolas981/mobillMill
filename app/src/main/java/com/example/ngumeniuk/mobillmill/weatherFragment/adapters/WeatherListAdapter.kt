@@ -6,14 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.ngumeniuk.mobillmill.R
-import com.example.ngumeniuk.mobillmill.weatherFragment.data.models.WeatherModel
+import com.example.ngumeniuk.mobillmill.weatherFragment.data.models.databaseEnteties.WeatherModel
 import com.example.ngumeniuk.mobillmill.widgets.adapters.ListAdapter
 import kotlinx.android.synthetic.main.item_weather_list.view.*
 
 
 class WeatherListAdapter : ListAdapter<WeatherModel, WeatherListAdapter.ViewHolder>() {
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int)=
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
             holder.bind(list[position])
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -26,7 +26,7 @@ class WeatherListAdapter : ListAdapter<WeatherModel, WeatherListAdapter.ViewHold
         @SuppressLint("SetTextI18n")
         fun bind(model: WeatherModel) {
             with(itemView) {
-                with(model){
+                with(model) {
                     dateTV.text = dt
                     tempTV.text = temp.toString() + "°"
                     min_and_maxTV.text = "$tempMin° - $tempMax°"
