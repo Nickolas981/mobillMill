@@ -1,4 +1,4 @@
-package com.example.ngumeniuk.mobillmill.weatherFragment.adapters
+package com.example.ngumeniuk.mobillmill.weatherFragment.ui.adapters
 
 import android.annotation.SuppressLint
 import android.support.v7.widget.RecyclerView
@@ -6,9 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.ngumeniuk.mobillmill.R
-import com.example.ngumeniuk.mobillmill.weatherFragment.data.models.databaseEnteties.WeatherModel
+import com.example.ngumeniuk.mobillmill.weatherFragment.logic.data.models.databaseEnteties.WeatherModel
 import com.example.ngumeniuk.mobillmill.widgets.adapters.ListAdapter
-import kotlinx.android.synthetic.main.item_weather_list.view.*
 
 
 class WeatherListAdapter : ListAdapter<WeatherModel, WeatherListAdapter.ViewHolder>() {

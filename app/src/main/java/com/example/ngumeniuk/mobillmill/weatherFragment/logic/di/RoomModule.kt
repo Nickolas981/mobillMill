@@ -1,11 +1,11 @@
-package com.example.ngumeniuk.mobillmill.weatherFragment.di
+package com.example.ngumeniuk.mobillmill.weatherFragment.logic.di
 
 import android.arch.persistence.room.Room
 import android.content.Context
-import com.example.ngumeniuk.mobillmill.weatherFragment.data.dao.WeatherDao
-import com.example.ngumeniuk.mobillmill.weatherFragment.data.dataRepositories.RoomWeatherRepository
-import com.example.ngumeniuk.mobillmill.weatherFragment.data.dataSource.DatabaseWeatherDataSource
-import com.example.ngumeniuk.mobillmill.weatherFragment.data.database.WeatherDatabase
+import com.example.ngumeniuk.mobillmill.weatherFragment.logic.data.dao.WeatherDao
+import com.example.ngumeniuk.mobillmill.weatherFragment.logic.data.dataRepositories.RoomWeatherRepository
+import com.example.ngumeniuk.mobillmill.weatherFragment.logic.data.dataSource.DatabaseWeatherDataSource
+import com.example.ngumeniuk.mobillmill.database.WeatherDatabase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

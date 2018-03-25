@@ -1,7 +1,7 @@
-package com.example.ngumeniuk.mobillmill.weatherFragment.data.dao
+package com.example.ngumeniuk.mobillmill.weatherFragment.logic.data.dao
 
 import android.arch.persistence.room.*
-import com.example.ngumeniuk.mobillmill.weatherFragment.data.models.databaseEnteties.WeatherModel
+import com.example.ngumeniuk.mobillmill.weatherFragment.logic.data.models.databaseEnteties.WeatherModel
 import io.reactivex.Flowable
 
 

@@ -1,4 +1,4 @@
-package com.example.ngumeniuk.mobilmill.weatherFragment.models.local
+package com.example.ngumeniuk.mobillmill.weatherFragment.logic.data.models.retrofitResponse
 
 import com.google.gson.annotations.SerializedName
 

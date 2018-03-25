@@ -3,7 +3,7 @@ package com.example.ngumeniuk.mobillmill.web.di
 import com.example.ngumeniuk.mobillmill.weatherFragment.logic.data.dataRepositories.RetrofitWeatherRepository
 import com.example.ngumeniuk.mobillmill.weatherFragment.logic.data.dataSource.NetworkWeatherDataSource
 import com.example.ngumeniuk.mobilmill.web.Endpoints
-import com.example.ngumeniuk.mobilmill.web.WeatherAPI
+import com.example.ngumeniuk.mobillmill.web.WeatherAPI
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit

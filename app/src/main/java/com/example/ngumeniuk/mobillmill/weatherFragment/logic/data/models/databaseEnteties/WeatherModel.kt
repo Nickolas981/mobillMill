@@ -1,6 +1,5 @@
-package com.example.ngumeniuk.mobillmill.weatherFragment.data.models.databaseEnteties
+package com.example.ngumeniuk.mobillmill.weatherFragment.logic.data.models.databaseEnteties
 
-import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import com.example.ngumeniuk.curogram.utils.Differeble

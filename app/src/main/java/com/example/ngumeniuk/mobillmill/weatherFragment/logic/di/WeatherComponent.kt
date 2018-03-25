@@ -1,7 +1,7 @@
-package com.example.ngumeniuk.mobillmill.weatherFragment.di
+package com.example.ngumeniuk.mobillmill.weatherFragment.logic.di
 
 import com.example.ngumeniuk.mobillmill.location.LocationModule
-import com.example.ngumeniuk.mobillmill.weatherFragment.viewModel.WeatherViewModel
+import com.example.ngumeniuk.mobillmill.weatherFragment.logic.viewModel.WeatherViewModel
 import com.example.ngumeniuk.mobillmill.web.di.RetrofitModule
 import dagger.Component
 import javax.inject.Singleton
