@@ -3,6 +3,7 @@ package com.example.ngumeniuk.mobillmill
 import android.app.Application
 import com.example.ngumeniuk.mobillmill.location.LocationModule
 import com.example.ngumeniuk.mobillmill.weatherFragment.logic.di.DaggerWeatherComponent
+import com.example.ngumeniuk.mobillmill.weatherFragment.logic.di.RoomModule
 import com.example.ngumeniuk.mobillmill.weatherFragment.logic.di.WeatherComponent
 
 class App : Application(){
@@ -18,5 +19,6 @@ class App : Application(){
     private fun buildWeatherComponent() = DaggerWeatherComponent
             .builder()
             .locationModule(LocationModule(applicationContext))
+            .roomModule(RoomModule(this))
             .build()
 }

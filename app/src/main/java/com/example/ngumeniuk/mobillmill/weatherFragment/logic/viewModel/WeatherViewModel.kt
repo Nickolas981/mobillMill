@@ -3,54 +3,87 @@ package com.example.ngumeniuk.mobillmill.weatherFragment.logic.viewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.example.ngumeniuk.curogram.utils.BaseViewModel
+import com.example.ngumeniuk.mobillmill.App
 import com.example.ngumeniuk.mobillmill.weatherFragment.logic.data.dataSource.DatabaseWeatherDataSource
 import com.example.ngumeniuk.mobillmill.weatherFragment.logic.data.dataSource.NetworkWeatherDataSource
 import com.example.ngumeniuk.mobillmill.weatherFragment.logic.data.models.databaseEnteties.WeatherModel
-import com.example.ngumeniuk.mobillmill.weatherFragment.logic.data.models.retrofitResponse.WeatherItem
-import com.example.ngumeniuk.mobillmill.weatherFragment.logic.data.models.retrofitResponse.WeatherResponse
 import com.example.ngumeniuk.mobillmill.widgets.utils.DataResource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
+import org.jetbrains.anko.coroutines.experimental.bg
 import java.net.InetAddress
 import javax.inject.Inject
 
 
-class WeatherViewModel @Inject constructor(private val databaseRepo: DatabaseWeatherDataSource,
-                                           private val networkRepo: NetworkWeatherDataSource)
-    : BaseViewModel() {
+class WeatherViewModel : BaseViewModel() {
+
+    @Inject
+    lateinit var databaseRepo: DatabaseWeatherDataSource
+    @Inject
+    lateinit var networkRepo: NetworkWeatherDataSource
 
     private val liveDataWeather = MutableLiveData<DataResource<List<WeatherModel>>>()
 
+    init {
+        App.weatherComponent.inject(this)
+    }
+
+    fun loadWeather() {
+        if (liveDataWeather.value == null) {
+            getWeatherFromDatabase()
+            async {
+                val connection = bg { isInternetAvailable() }.await()
+                if (connection)
+                    getWeather()
+            }
+        }
+    }
+
+    private fun getWeatherFromDatabase() {
+        addDisposable(
+                databaseRepo.getAll()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({ setWeatherValue(DataResource.success(it)) },
+                                { setWeatherValue(DataResource.error(it, null)) })
+        )
+    }
+
+
     fun getWeather() {
         setWeatherValue(DataResource.loading(null))
-        if (isInternetAvailable()) {
-            addDisposable(
-                    networkRepo
-                            .getWeather(35.toDouble(), 35.toDouble())
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .map {
-                                val res: MutableList<WeatherModel> = ArrayList()
-                                var hourCounter = 0
-                                for (weatherItem in it.list) {
-                                    if (hourCounter++ == 0) {
-                                        res.add(WeatherModel(weatherItem.main.temp,
-                                                weatherItem.main.tempMin,
-                                                weatherItem.main.tempMax,
-                                                weatherItem.dt))
-                                    }
-                                    if (hourCounter == 8)
-                                        hourCounter = 0
+        addDisposable(
+                networkRepo
+                        .getWeather(35.toDouble(), 35.toDouble())
+                        .map {
+                            val res: MutableList<WeatherModel> = ArrayList()
+                            var hourCounter = 0
+                            for (weatherItem in it.list) {
+                                if (hourCounter++ == 0) {
+                                    res.add(WeatherModel(weatherItem.main.temp,
+                                            weatherItem.main.tempMin,
+                                            weatherItem.main.tempMax,
+                                            weatherItem.dt))
                                 }
-                                res.subList(0, 3).toList()
+                                if (hourCounter == 8)
+                                    hourCounter = 0
                             }
-                            .subscribe({
-                                databaseRepo.dropTable()
-                                setWeatherValue(DataResource.success(it))
-                            }, {
-                                setWeatherValue(DataResource.error(it, null))
-                            })
-            )
+                            res.subList(0, 3).toList()
+                        }
+                        .subscribe({
+                            databaseRepo.dropTable()
+                            putWeatherToDatabase(it)
+                        }, {
+                            setWeatherValue(DataResource.error(it, null))
+                        })
+        )
+    }
+
+    private fun putWeatherToDatabase(list: List<WeatherModel>) {
+        for (weather in list) {
+            bg { databaseRepo.putWeatherModel(weather) }
         }
     }
 

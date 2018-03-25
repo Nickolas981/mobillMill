@@ -18,16 +18,17 @@ abstract class ListAdapter<T : Differeble, VH : RecyclerView.ViewHolder> : Recyc
     override fun getItemId(i: Int): Long = i.toLong()
 
     fun change(items: List<T>) {
-        async (UI){
-            val diff = bg{ DiffUtil.calculateDiff(NoteDiffUtilCallback(list, items.toList())) }.await()
-            clearList()
-            list.addAll(items)
-            dispatchUpdates(diff)
+        async(UI) {
+            val diff = bg { DiffUtil.calculateDiff(NoteDiffUtilCallback(list, items.toList())) }.await()
+            dispatchUpdates(diff, items)
         }
     }
 
-    private fun dispatchUpdates(diff: DiffUtil.DiffResult){
+    private fun dispatchUpdates(diff: DiffUtil.DiffResult, items: List<T>) {
+        clearList()
+        list.addAll(items)
         diff.dispatchUpdatesTo(this)
+
     }
 
     fun removeAt(position: Int) {

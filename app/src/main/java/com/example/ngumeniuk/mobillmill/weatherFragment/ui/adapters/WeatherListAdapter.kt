@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.example.ngumeniuk.mobillmill.R
 import com.example.ngumeniuk.mobillmill.weatherFragment.logic.data.models.databaseEnteties.WeatherModel
 import com.example.ngumeniuk.mobillmill.widgets.adapters.ListAdapter
+import kotlinx.android.synthetic.main.item_weather_list.view.*
 
 
 class WeatherListAdapter : ListAdapter<WeatherModel, WeatherListAdapter.ViewHolder>() {
@@ -26,9 +27,9 @@ class WeatherListAdapter : ListAdapter<WeatherModel, WeatherListAdapter.ViewHold
         fun bind(model: WeatherModel) {
             with(itemView) {
                 with(model) {
-//                    dateTV.text = dt
-//                    tempTV.text = temp.toString() + "°"
-//                    min_and_maxTV.text = "$tempMin° - $tempMax°"
+                    dateTV.text = dt
+                    tempTV.text = temp.toString() + "°"
+                    min_and_maxTV.text = "$minimal° - $maximal°"
                 }
             }
         }
