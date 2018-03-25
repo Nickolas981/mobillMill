@@ -4,6 +4,9 @@ import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import com.example.ngumeniuk.curogram.utils.Differeble
 import com.example.ngumeniuk.curogram.utils.NoteDiffUtilCallback
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
+import org.jetbrains.anko.coroutines.experimental.bg
 
 
 abstract class ListAdapter<T : Differeble, VH : RecyclerView.ViewHolder> : RecyclerView.Adapter<VH>() {
@@ -15,9 +18,15 @@ abstract class ListAdapter<T : Differeble, VH : RecyclerView.ViewHolder> : Recyc
     override fun getItemId(i: Int): Long = i.toLong()
 
     fun change(items: List<T>) {
-        val diff = DiffUtil.calculateDiff(NoteDiffUtilCallback(list, items.toList()))
-        clearList()
-        list.addAll(items)
+        async (UI){
+            val diff = bg{ DiffUtil.calculateDiff(NoteDiffUtilCallback(list, items.toList())) }.await()
+            clearList()
+            list.addAll(items)
+            dispatchUpdates(diff)
+        }
+    }
+
+    private fun dispatchUpdates(diff: DiffUtil.DiffResult){
         diff.dispatchUpdatesTo(this)
     }
 
