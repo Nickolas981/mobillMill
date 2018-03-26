@@ -8,10 +8,10 @@ import com.example.ngumeniuk.mobillmill.App
 import com.example.ngumeniuk.mobillmill.weatherFragment.logic.data.dataSource.DatabaseWeatherDataSource
 import com.example.ngumeniuk.mobillmill.weatherFragment.logic.data.dataSource.NetworkWeatherDataSource
 import com.example.ngumeniuk.mobillmill.weatherFragment.logic.data.models.databaseEnteties.WeatherModel
+import com.example.ngumeniuk.mobillmill.weatherFragment.logic.data.models.location.Location
 import com.example.ngumeniuk.mobillmill.widgets.utils.DataResource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.coroutines.experimental.bg
 import java.net.InetAddress
@@ -26,6 +26,9 @@ class WeatherViewModel : BaseViewModel() {
     lateinit var networkRepo: NetworkWeatherDataSource
 
     private val liveDataWeather = MutableLiveData<DataResource<List<WeatherModel>>>()
+    private val liveDataLocation = MutableLiveData<Location>()
+
+    private var loaded = false
 
     private val handler = Handler()
     private val waitCode = object : Runnable {
@@ -51,10 +54,15 @@ class WeatherViewModel : BaseViewModel() {
     fun loadWeather() {
         if (liveDataWeather.value == null) {
             getWeatherFromDatabase()
-            handler.post(waitCode)
+            setLocation(null)
         }
     }
 
+    fun loadWeatherFromNetwork() {
+        if (!loaded) {
+            handler.post(waitCode)
+        }
+    }
 
     private fun getWeatherFromDatabase() {
         addDisposable(
@@ -66,12 +74,11 @@ class WeatherViewModel : BaseViewModel() {
         )
     }
 
-
     fun getWeather() {
         setWeatherValue(DataResource.loading(null))
         addDisposable(
                 networkRepo
-                        .getWeather(35.toDouble(), 35.toDouble())
+                        .getWeather(liveDataLocation.value!!.lon, liveDataLocation.value!!.lat)
                         .map {
                             val res: MutableList<WeatherModel> = ArrayList()
                             var hourCounter = 0
@@ -88,6 +95,7 @@ class WeatherViewModel : BaseViewModel() {
                             res.subList(0, 3).toList()
                         }
                         .subscribe({
+                            loaded = true
                             databaseRepo.dropTable()
                             putWeatherToDatabase(it)
                         }, {
@@ -108,6 +116,13 @@ class WeatherViewModel : BaseViewModel() {
 
     fun getWeatherLiveData(): LiveData<DataResource<List<WeatherModel>>> =
             liveDataWeather
+
+    fun getLocationLiveData() : LiveData<Location> =
+            liveDataLocation
+
+    fun setLocation(location: Location?){
+        liveDataLocation.postValue(location)
+    }
 
     private fun isInternetAvailable(): Boolean = try {
         val ipAddr = InetAddress.getByName("google.com")
