@@ -10,7 +10,7 @@ interface WeatherDao{
     @Insert
     fun putWeatherModel(weather : WeatherModel)
 
-    @Query("SELECT * FROM weather")
+    @Query("SELECT * FROM weather ORDER BY dt ASC")
     fun getAll(): Flowable<List<WeatherModel>>
 
     @Query("DELETE FROM weather")
