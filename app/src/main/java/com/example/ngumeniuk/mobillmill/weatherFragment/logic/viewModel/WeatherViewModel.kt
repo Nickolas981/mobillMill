@@ -2,6 +2,7 @@ package com.example.ngumeniuk.mobillmill.weatherFragment.logic.viewModel
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.os.Handler
 import com.example.ngumeniuk.curogram.utils.BaseViewModel
 import com.example.ngumeniuk.mobillmill.App
 import com.example.ngumeniuk.mobillmill.weatherFragment.logic.data.dataSource.DatabaseWeatherDataSource
@@ -26,6 +27,23 @@ class WeatherViewModel : BaseViewModel() {
 
     private val liveDataWeather = MutableLiveData<DataResource<List<WeatherModel>>>()
 
+    private val handler = Handler()
+    private val waitCode = object : Runnable {
+        override fun run() {
+            async {
+                val connection = bg { isInternetAvailable() }.await()
+                if (connection)
+                    getWeather()
+                else
+                    postDelayed()
+            }
+        }
+
+        fun postDelayed(){
+            handler.postDelayed(this, 2000)
+        }
+    }
+
     init {
         App.weatherComponent.inject(this)
     }
@@ -33,13 +51,10 @@ class WeatherViewModel : BaseViewModel() {
     fun loadWeather() {
         if (liveDataWeather.value == null) {
             getWeatherFromDatabase()
-            async {
-                val connection = bg { isInternetAvailable() }.await()
-                if (connection)
-                    getWeather()
-            }
+            handler.post(waitCode)
         }
     }
+
 
     private fun getWeatherFromDatabase() {
         addDisposable(
