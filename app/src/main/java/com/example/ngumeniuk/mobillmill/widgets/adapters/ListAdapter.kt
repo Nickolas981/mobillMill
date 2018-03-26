@@ -20,15 +20,14 @@ abstract class ListAdapter<T : Differeble, VH : RecyclerView.ViewHolder> : Recyc
     fun change(items: List<T>) {
         async(UI) {
             val diff = bg { DiffUtil.calculateDiff(NoteDiffUtilCallback(list, items.toList())) }.await()
-            dispatchUpdates(diff, items)
+            clearList()
+            list.addAll(items)
+            dispatchUpdates(diff)
         }
     }
 
-    private fun dispatchUpdates(diff: DiffUtil.DiffResult, items: List<T>) {
-        clearList()
-        list.addAll(items)
+    private fun dispatchUpdates(diff: DiffUtil.DiffResult) {
         diff.dispatchUpdatesTo(this)
-
     }
 
     fun removeAt(position: Int) {
